@@ -1,0 +1,19 @@
+
+
+.present-day {
+  background-color: #007bff !important; /* Blue */
+  color: white !important;
+  border-radius: 50%;
+}
+
+.absent-day {
+  background-color: #dc3545 !important; /* Red */
+  color: white !important;
+  border-radius: 50%;
+}
+
+.attendance-container {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+}
