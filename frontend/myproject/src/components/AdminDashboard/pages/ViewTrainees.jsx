@@ -333,7 +333,7 @@ const ViewTrainees = () => {
             <TraineeCard
               key={trainee.empId}
               trainee={trainee}
-              onClick={() => navigate(`/trainee/${trainee.empId}`)}
+              onClick={() => navigate(`/admin/trainee/${trainee.empId}`)}
             />
           ))}
         </div>

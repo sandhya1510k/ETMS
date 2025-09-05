@@ -295,7 +295,7 @@ const TraineeDetails = () => {
       <div className="max-w-6xl mx-auto">
         {/* Back link */}
         <Link 
-          to="/trainees" 
+          to="/admin/trainees" 
           className="inline-flex items-center text-blue-500 hover:text-blue-700 mb-6 transition-colors"
         >
           <FiArrowLeft className="mr-2" />

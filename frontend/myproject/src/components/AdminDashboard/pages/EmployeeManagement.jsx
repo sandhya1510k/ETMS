@@ -156,7 +156,7 @@ export default function EmployeeManagement() {
 
               {/* Link to Add Employee Page */}
               <Link
-                to="/add-employee"
+                to="/admin/add-employee"
                 className="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-md hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center"
               >
                 <svg

@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  FlaskConical,
-  Wrench,
-  BarChart3,
-  Users,
-  FileText,
-  Coffee,
-  Database,
-  Clock,
-} from "lucide-react";
+import { Users, Clock, FileText } from "lucide-react";
 
 const batchesData = [
   { 
@@ -83,27 +74,6 @@ const BatchManagement = () => {
     return "bg-green-500";
   };
 
-  const renderDomainIcon = (domain) => {
-    const iconStyle = "w-6 h-6 mb-2";
-    
-    switch(domain) {
-      case "Python":
-        return <Database className={`${iconStyle} text-blue-600`} />;
-      case "Java":
-        return <Coffee className={`${iconStyle} text-red-600`} />;
-      case "Testing":
-        return <FlaskConical className={`${iconStyle} text-green-600`} />;
-      case "DevOps":
-        return <Wrench className={`${iconStyle} text-yellow-600`} />;
-      case "Power BI":
-        return <BarChart3 className={`${iconStyle} text-yellow-500`} />;
-      case "HR":
-        return <Users className={`${iconStyle} text-purple-600`} />;
-      default:
-        return <FileText className={`${iconStyle} text-gray-600`} />;
-    }
-  };
-
   return (
     <div className="p-6 min-h-screen" style={{
       background: "linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%)",
@@ -120,19 +90,16 @@ const BatchManagement = () => {
             <div 
               key={domain} 
               onClick={() => handleDomainSelect(domain)}
-              className={`p-4 rounded-xl shadow-sm cursor-pointer transition-all duration-300 ${
+              className={`p-4 rounded-xl shadow-sm cursor-pointer transition-all duration-300 text-center ${
                 selectedDomain === domain 
                   ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white" 
                   : "bg-white hover:bg-blue-50 text-gray-700"
               }`}
             >
-              <div className="flex flex-col items-center justify-center">
-                {renderDomainIcon(domain)}
-                <span className="font-medium text-center">{domain}</span>
-                <span className="text-sm mt-1">
-                  {batchesData.filter(b => b.domain === domain).length} batches
-                </span>
-              </div>
+              <span className="font-medium">{domain}</span>
+              <p className="text-xs mt-1">
+                {batchesData.filter(b => b.domain === domain).length} batches
+              </p>
             </div>
           ))}
         </div>
@@ -199,7 +166,7 @@ const BatchManagement = () => {
               <div className="flex gap-2">
                 <button 
                   className="flex-1 bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg text-sm hover:bg-blue-200 transition-colors"
-                  onClick={() => navigate(`/batch/${batch.batchId}`)}
+                  onClick={() => navigate(`/admin/batch/${batch.batchId}`)}
                 >
                   View
                 </button>

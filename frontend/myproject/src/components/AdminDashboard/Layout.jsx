@@ -46,27 +46,27 @@
 
 // export default Layout;
 
-
-
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {
-  const [collapsed, setCollapsed] = useState(false); // 🔥 shared state
+  const [collapsed, setCollapsed] = useState(false); // shared state ✅
 
   return (
-    <div className="relative h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden flex">
+      {/* Sidebar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
+      {/* Main Content */}
       <div
-        className={`h-full flex flex-col transition-all duration-300 ${
+        className={`flex flex-col transition-all duration-300 w-full ${
           collapsed ? "ml-20" : "ml-64"
         }`}
       >
         <Navbar />
-        <main className="flex-1 overflow-y-auto bg-gray-50 p-6">
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-1">
           <Outlet />
         </main>
       </div>
