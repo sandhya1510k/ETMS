@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaHome, FaTasks, FaUserCheck, FaClipboardList,
   FaCalendarAlt, FaComments, FaCog, FaUser,
-  FaChevronLeft, FaChevronRight, FaBell
+  FaChevronLeft, FaChevronRight, FaBell, FaSignOutAlt
 } from "react-icons/fa";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  // 🔹 Add sample unread notifications count
-  const [unreadCount, setUnreadCount] = useState(3);
+  const [unreadCount, setUnreadCount] = useState(2);
+  const navigate = useNavigate();
 
   const links = [
     { path: "dashboard", label: "Dashboard", icon: <FaHome /> },
@@ -21,6 +21,16 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { path: "profile", label: "Profile", icon: <FaUser /> },
     { path: "settings", label: "Settings", icon: <FaCog /> },
   ];
+
+  const handleLogout = () => {
+    // Clear any stored user data
+    localStorage.removeItem("traineeName");
+    localStorage.removeItem("traineeId");
+    localStorage.removeItem("traineeEmail");
+    
+    // Redirect to login page
+    navigate("/");
+  };
 
   return (
     <aside
@@ -46,7 +56,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <p className="text-white text-sm">Employee Panel</p>
           </>
         ) : (
-          <h2 className="text-3xl font-extrabold tracking-wide text-white">T</h2>
+          <h2 className="text-xl font-extrabold tracking-wide text-white">TMS</h2>
         )}
       </div>
 
@@ -70,7 +80,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               {isOpen && <span className="font-medium">{link.label}</span>}
             </div>
 
-            {/* 🔹 Show notification badge */}
+            {/* Show notification badge */}
             {link.path === "notifications" && unreadCount > 0 && (
               <span className="bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {unreadCount}
@@ -79,6 +89,19 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           </NavLink>
         ))}
       </nav>
+
+      {/* Logout Button at the bottom */}
+      <div className="mt-auto p-4 border-t border-teal-700">
+        <button
+          onClick={handleLogout}
+          className={`flex items-center w-full px-4 py-2 rounded-md transition-all duration-200 hover:bg-gray-700 hover:text-teal-400 text-gray-300 ${
+            isOpen ? "justify-start gap-3" : "justify-center"
+          }`}
+        >
+          <span className="text-lg"><FaSignOutAlt /></span>
+          {isOpen && <span className="font-medium">Logout</span>}
+        </button>
+      </div>
     </aside>
   );
 }
