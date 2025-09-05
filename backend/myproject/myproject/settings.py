@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
+    "corsheaders",
     'myapp',  # Replace with your actual app name
 ]
 
@@ -59,6 +59,8 @@ MIDDLEWARE = [
 # Frontend ka URL allow karo
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:5174",
+
 ]
 
 
