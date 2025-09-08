@@ -42,6 +42,20 @@ const App = () => {
         {TrainerRoutes()}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
+
+       <div
+  className="fixed inset-0 flex items-center justify-center pointer-events-none"
+  style={{
+    backgroundImage: "url('/camellogo.jpg')", // Make sure camellogo.jpg is in your public folder
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "900px",
+    opacity: 0.06,
+    zIndex: 0,
+    width: "100vw",
+    height: "100vh",
+  }}
+></div>
     </Router>
   );
 };
