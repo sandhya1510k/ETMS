@@ -69,10 +69,19 @@ const Navbar = () => {
 
           {showProfileMenu && (
             <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg">
-              <div className="p-4">
+              <div className="p-4 border-b">
                 <p className="text-gray-800 font-medium">Admin User</p>
                 <p className="text-gray-500 text-sm">admin@etms.com</p>
               </div>
+              <button
+                className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 transition"
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  navigate("/");
+                }}
+              >
+                Logout
+              </button>
             </div>
           )}
         </div>

@@ -193,11 +193,15 @@ const AdminDashboard = () => {
       link: "/admin/trainees",
     },
     {
-      title: "Active Trainers",
+      title: "Total Trainers",
       value: trainerCount,
       icon: <FiUserCheck />,
       color: "from-emerald-500 to-teal-600",
       link: "/admin/employees",
+       borderColor: "border-black", 
+      borderWidth: "border-2",
+
+        
     },
     {
       title: "Ongoing Batches",
@@ -205,21 +209,24 @@ const AdminDashboard = () => {
       icon: <FiLayers />,
       color: "from-amber-500 to-orange-500",
       link: "/admin/batches",
+      borderColor: "border-black", 
+      borderWidth: "border-2",
     },
   ];
 
   return (
-    <div className="p-6 space-y-8 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+    <div className="  p-3 space-y-8 bg-white min-h-screen">
       {/* Hero Section */}
       <motion.div
-        className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl p-6 flex flex-col justify-center items-start shadow-lg border-0 relative overflow-hidden"
+        className="bg-gradient-to-r from-blue-400 to-blue-500  font-bold rounded-2xl  p-6 flex flex-col justify-center items-start 
+          shadow-lg border-blue-700 relative overflow-hidden"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="absolute -right-4 -top-4 w-28 h-28 rounded-full bg-white/10"></div>
         <div className="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-white/10"></div>
-        <h1 className="text-3xl font-bold text-white relative z-10">Welcome to Admin</h1>
-        <p className="text-blue-100 mt-2 flex items-center gap-2 relative z-10">
+        <h1 className="text-4xl font-semibold text-black relative z-10">Welcome to Admin</h1>
+        <p className="text-black font-medium mt-2 flex items-center gap-2 relative z-10">
           <FiClock className="text-sm" /> {dateTime}
         </p>
       </motion.div>

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Modal from "../components/Modal"; 
 import Toast from "../components/Toast";
 
 export default function AddEmployee({ onAdd, onClose }) {
+  const navigate = useNavigate();
   const defaultPhoto =
     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; 
 
@@ -40,66 +43,39 @@ export default function AddEmployee({ onAdd, onClose }) {
     }
   };
 
-  const handleAddUser = (e) => {
+  const handleAddUser = async (e) => {
     e.preventDefault();
-    if (
-      !form.name ||
-      !form.trainerId ||
-      !form.empId ||
-      !form.personalEmail ||
-      !form.phone ||
-      !form.domain ||
-      !form.role ||
-      !form.password
-    ) {
-      setToast({ message: "All fields are required!", type: "error" });
-      return;
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    if (photoFile) {
+      formData.append("photo", photoFile);
     }
 
-    let photoUrl = photoPreview || defaultPhoto;
-
-    const newEmployee = {
-      ...form,
-      photo: photoUrl,
-      traineeCount: 0,
-      performance: 85,
-      meetings: [],
-      batches: "New Batch",
-      experience: form.experience || "0 years",
-      joinDate: form.joinDate || new Date().toISOString().split("T")[0]
-    };
-
-    onAdd(newEmployee);
-    setToast({ message: `${form.role} added successfully!`, type: "success" });
-
-    // Reset form
-    setForm({
-      name: "",
-      trainerId: "",
-      empId: "",
-      personalEmail: "",
-      phone: "",
-      domain: "",
-      role: "",
-      password: "",
-      experience: "",
-      joinDate: ""
-    });
-    setPhotoFile(null);
-    setPhotoPreview(defaultPhoto);
+    try {
+      await axios.post("http://localhost:8000/api/trainers/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setToast({ type: "success", message: "Employee added successfully!" });
+      navigate("/admin/trainermanagement");
+    } catch (error) {
+      setToast({ type: "error", message: "Error adding employee" });
+    }
   };
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-blue-50 to-green-50 relative">
       {/* ❌ Cross button */}
-      {onClose && (
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-6 text-gray-500 hover:text-red-600 text-2xl font-bold"
-        >
-          &times;
-        </button>
-      )}
+      <button
+        onClick={() => navigate("/admin/employees")}
+        className="absolute top-10 right-55 z-10 text-gray-500 hover:text-red-600 text-3xl font-bold"
+        aria-label="Close"
+      >
+        &times;
+      </button>
 
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-6 relative">
         <h2 className="text-2xl font-bold mb-4">Add Employee</h2>
@@ -207,7 +183,7 @@ export default function AddEmployee({ onAdd, onClose }) {
                 type="file"
                 accept="image/*"
                 onChange={handlePhotoChange}
-                className="block w-full"
+                className="block  border-1 border-black"
               />
               {photoPreview && (
                 <img
