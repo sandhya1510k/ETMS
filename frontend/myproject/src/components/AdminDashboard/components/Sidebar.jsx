@@ -1,12 +1,13 @@
 import React from "react";
-import { FiMenu, FiHome, FiUsers, FiLayers } from "react-icons/fi";
+import { FiMenu, FiHome, FiUsers, FiLayers, FiUserCheck } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
   { label: "Dashboard", icon: <FiHome />, path: "dashboard" },
-  { label: "Trainer Management", icon: <FiUsers />, path: "employees" },
-  { label: "Trainees Management", icon: <FiUsers />, path: "trainees" },
+  { label: "Trainer Management", icon: <  FiUserCheck />, path: "employees" },
+  { label: "Trainees Management", icon: <FiUsers    />, path: "trainees" },
   { label: "Batch Management", icon: <FiLayers />, path: "batches" },
+  { label: "employees Management", icon: <FiUsers    />, path: "add-employee" },
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
