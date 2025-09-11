@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaHome, FaTasks, FaUserCheck, FaClipboardList,
@@ -7,14 +7,51 @@ import {
 } from "react-icons/fa";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  const [unreadCount, setUnreadCount] = useState(2);
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
+
+  // Function to update unread count from localStorage
+  const updateUnreadCount = () => {
+    const storedCount = localStorage.getItem("unreadNotifications");
+    if (storedCount) {
+      setUnreadCount(parseInt(storedCount));
+    } else {
+      // Initialize with 2 unread notifications if not set
+      localStorage.setItem("unreadNotifications", "2");
+      setUnreadCount(2);
+    }
+  };
+
+  // Listen for storage events to sync across tabs
+  useEffect(() => {
+    updateUnreadCount();
+    
+    const handleStorageChange = (e) => {
+      if (e.key === "unreadNotifications") {
+        setUnreadCount(parseInt(e.newValue) || 0);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom events from the same tab
+    const handleUnreadCountChange = () => {
+      updateUnreadCount();
+    };
+    
+    window.addEventListener('unreadCountChanged', handleUnreadCountChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('unreadCountChanged', handleUnreadCountChange);
+    };
+  }, []);
 
   const links = [
     { path: "dashboard", label: "Dashboard", icon: <FaHome /> },
     { path: "tasks", label: "Tasks", icon: <FaTasks /> },
     { path: "attendance", label: "Attendance", icon: <FaUserCheck /> },
-    { path: "assignments", label: "Assignments", icon: <FaClipboardList /> },
+    { path: "Assessments ", label: "Assessments ", icon: <FaClipboardList /> },
     { path: "meetings", label: "Meetings", icon: <FaCalendarAlt /> },
     { path: "chat", label: "Chat", icon: <FaComments /> },
     { path: "notifications", label: "Notifications", icon: <FaBell /> },
@@ -27,6 +64,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     localStorage.removeItem("traineeName");
     localStorage.removeItem("traineeId");
     localStorage.removeItem("traineeEmail");
+    localStorage.removeItem("unreadNotifications");
     
     // Redirect to login page
     navigate("/");

@@ -7,7 +7,7 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
   const [fileInputs, setFileInputs] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [showStatusFilter, setShowStatusFilter] = useState(false);
@@ -18,12 +18,13 @@ const Tasks = () => {
   const [isSubmittingQuery, setIsSubmittingQuery] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  // Updated color scheme with teal and indigo combinations
+  
+
   const colorScheme = {
     primary: {
       bg: "bg-teal-600",
       hover: "hover:bg-teal-700",
-      text: "text-white",
+      text: "text-black ",
       light: "bg-teal-50",
       border: "border-teal-500",
       ring: "ring-teal-500",
@@ -58,8 +59,8 @@ const Tasks = () => {
   useEffect(() => {
     const loadMockData = async () => {
       try {
-        setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLoading(false);
+        await new Promise(resolve => setTimeout(resolve, 0));
 
         // Mock current tasks
         setTasks([

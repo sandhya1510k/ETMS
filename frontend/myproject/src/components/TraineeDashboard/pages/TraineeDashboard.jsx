@@ -199,45 +199,6 @@ export default function TraineeDashboard({ isSidebarOpen }) {
         <div className="flex items-center space-x-4">
           <div className="relative">
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 rounded-full hover:bg-gray-100 relative"
-            >
-              <FaBell className="text-gray-600" />
-              {notifications.length > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {notifications.length}
-                </span>
-              )}
-            </button>
-            {showNotifications && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg overflow-hidden"
-              >
-                <div className="p-3 border-b border-gray-200 bg-gray-50">
-                  <h4 className="font-semibold text-gray-800">Notifications</h4>
-                </div>
-                <div className="max-h-60 overflow-y-auto">
-                  {notifications.length > 0 ? (
-                    notifications.map((n, i) => (
-                      <div key={i} className="p-3 border-b border-gray-100 hover:bg-gray-50">
-                        <p className="text-sm text-gray-700">{n}</p>
-                        <p className="text-xs text-gray-500 mt-1">Just now</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="p-4 text-center text-gray-500">
-                      No new notifications
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </div>
-
-          <div className="relative">
-            <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               className="flex items-center space-x-2 focus:outline-none"
             >

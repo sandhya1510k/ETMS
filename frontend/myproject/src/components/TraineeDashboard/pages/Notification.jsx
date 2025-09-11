@@ -21,103 +21,172 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Function to update unread count in localStorage and dispatch event
+  const updateUnreadCount = (count) => {
+    localStorage.setItem("unreadNotifications", count.toString());
+    setUnreadCount(count);
+    
+    // Dispatch event to update sidebar
+    window.dispatchEvent(new Event('unreadCountChanged'));
+  };
+
+  // Function to save notifications to localStorage
+  const saveNotificationsToStorage = (notifications) => {
+    localStorage.setItem("notifications", JSON.stringify(notifications));
+  };
+
+  // Function to load notifications from localStorage
+  const loadNotificationsFromStorage = () => {
+    const storedNotifications = localStorage.getItem("notifications");
+    if (storedNotifications) {
+      return JSON.parse(storedNotifications).map(notification => ({
+        ...notification,
+        timestamp: new Date(notification.timestamp)
+      }));
+    }
+    return null;
+  };
 
   // Sample notifications data
+  const getSampleNotifications = () => [
+    {
+      id: 1,
+      type: "task",
+      title: "Task Update: HTML - Create Portfolio Page",
+      message: "Your task status has been updated to 'In Progress'",
+      timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
+      read: false,
+      priority: "medium"
+    },
+    {
+      id: 2,
+      type: "attendance",
+      title: "Attendance Recorded",
+      message: "Your attendance for today has been marked as Present",
+      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
+      read: false,
+      priority: "low"
+    },
+    {
+      id: 3,
+      type: "assignment",
+      title: "New Assignment: CSS - Styling Forms",
+      message: "A new assignment has been assigned to you. Due date: Aug 25",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+      read: true,
+      priority: "high"
+    },
+    {
+      id: 4,
+      type: "meeting",
+      title: "Meeting Reminder: Django Fundamentals Training",
+      message: "Your meeting starts in 30 minutes",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
+      read: true,
+      priority: "medium"
+    },
+    {
+      id: 5,
+      type: "profile",
+      title: "Profile Updated",
+      message: "Your profile information has been successfully updated",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
+      read: true,
+      priority: "low"
+    },
+    {
+      id: 6,
+      type: "task",
+      title: "Task Completed: JavaScript - Todo App",
+      message: "Congratulations! You've completed this task",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48), // 2 days ago
+      read: true,
+      priority: "medium"
+    },
+    {
+      id: 7,
+      type: "assignment",
+      title: "Assignment Graded: React Advanced Workshop",
+      message: "Your assignment has been graded. Score: 92/100",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72), // 3 days ago
+      read: true,
+      priority: "high"
+    }
+  ];
+
+  // Load notifications on component mount
   useEffect(() => {
-    const sampleNotifications = [
-      {
-        id: 1,
-        type: "task",
-        title: "Task Update: HTML - Create Portfolio Page",
-        message: "Your task status has been updated to 'In Progress'",
-        timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-        read: false,
-        priority: "medium"
-      },
-      {
-        id: 2,
-        type: "attendance",
-        title: "Attendance Recorded",
-        message: "Your attendance for today has been marked as Present",
-        timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-        read: false,
-        priority: "low"
-      },
-      {
-        id: 3,
-        type: "assignment",
-        title: "New Assignment: CSS - Styling Forms",
-        message: "A new assignment has been assigned to you. Due date: Aug 25",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-        read: true,
-        priority: "high"
-      },
-      {
-        id: 4,
-        type: "meeting",
-        title: "Meeting Reminder: Django Fundamentals Training",
-        message: "Your meeting starts in 30 minutes",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
-        read: true,
-        priority: "medium"
-      },
-      {
-        id: 5,
-        type: "profile",
-        title: "Profile Updated",
-        message: "Your profile information has been successfully updated",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-        read: true,
-        priority: "low"
-      },
-      {
-        id: 6,
-        type: "task",
-        title: "Task Completed: JavaScript - Todo App",
-        message: "Congratulations! You've completed this task",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48), // 2 days ago
-        read: true,
-        priority: "medium"
-      },
-      {
-        id: 7,
-        type: "assignment",
-        title: "Assignment Graded: React Advanced Workshop",
-        message: "Your assignment has been graded. Score: 92/100",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72), // 3 days ago
-        read: true,
-        priority: "high"
-      }
-    ];
-    setNotifications(sampleNotifications);
+    const storedNotifications = loadNotificationsFromStorage();
+    
+    if (storedNotifications) {
+      setNotifications(storedNotifications);
+      
+      // Calculate unread count from stored notifications
+      const initialUnreadCount = storedNotifications.filter(n => !n.read).length;
+      updateUnreadCount(initialUnreadCount);
+    } else {
+      // Initialize with sample data if no stored notifications
+      const sampleNotifications = getSampleNotifications();
+      setNotifications(sampleNotifications);
+      saveNotificationsToStorage(sampleNotifications);
+      
+      // Calculate initial unread count
+      const initialUnreadCount = sampleNotifications.filter(n => !n.read).length;
+      updateUnreadCount(initialUnreadCount);
+    }
   }, []);
 
   const markAsRead = (id) => {
-    setNotifications(notifications.map(notification => 
+    const updatedNotifications = notifications.map(notification => 
       notification.id === id ? { ...notification, read: true } : notification
-    ));
+    );
+    
+    setNotifications(updatedNotifications);
+    saveNotificationsToStorage(updatedNotifications);
+    
+    // Update unread count
+    const newUnreadCount = updatedNotifications.filter(n => !n.read).length;
+    updateUnreadCount(newUnreadCount);
   };
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map(notification => ({
+    const updatedNotifications = notifications.map(notification => ({
       ...notification,
       read: true
-    })));
+    }));
+    
+    setNotifications(updatedNotifications);
+    saveNotificationsToStorage(updatedNotifications);
+    
+    // Update unread count to 0
+    updateUnreadCount(0);
   };
 
   const deleteNotification = (id) => {
-    setNotifications(notifications.filter(notification => notification.id !== id));
+    const notificationToDelete = notifications.find(n => n.id === id);
+    const updatedNotifications = notifications.filter(notification => notification.id !== id);
+    
+    setNotifications(updatedNotifications);
+    saveNotificationsToStorage(updatedNotifications);
+    
+    // Update unread count if the deleted notification was unread
+    if (notificationToDelete && !notificationToDelete.read) {
+      const newUnreadCount = Math.max(0, unreadCount - 1);
+      updateUnreadCount(newUnreadCount);
+    }
   };
 
   const clearAllNotifications = () => {
     setNotifications([]);
+    saveNotificationsToStorage([]);
+    updateUnreadCount(0);
   };
 
   const filteredNotifications = filter === "all" 
     ? notifications 
     : notifications.filter(notification => notification.type === filter);
-
-  const unreadCount = notifications.filter(n => !n.read).length;
 
   const getNotificationIcon = (type) => {
     switch (type) {
