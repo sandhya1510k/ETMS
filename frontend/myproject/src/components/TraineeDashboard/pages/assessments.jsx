@@ -7,11 +7,11 @@ import {
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-const Assignments = () => {
+const Assessments = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [assignments, setAssignments] = useState([]);
+  const [Assessments , setAssessments ] = useState([]);
   const [fileInputs, setFileInputs] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState("All");
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -42,12 +42,12 @@ const Assignments = () => {
     return `${currentYear}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   };
 
-  const getUpcomingAssignments = () => {
+  const getUpcomingAssessments  = () => {
     const today = new Date();
     const nextWeek = new Date();
     nextWeek.setDate(today.getDate() + 7);
     
-    return assignments.filter(assignment => {
+    return Assessments .filter(assignment => {
       const dueDate = new Date(assignment.dueDate);
       return dueDate > today && dueDate <= nextWeek && 
              assignment.status !== "Submitted" && 
@@ -58,10 +58,10 @@ const Assignments = () => {
   useEffect(() => {
     const loadMockData = async () => {
       try {
-        setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLoading(false);
+        await new Promise(resolve => setTimeout(resolve, 0));
 
-        const mockAssignments = [
+        const mockAssessments  = [
           {
             id: 1, title: "HTML Portfolio Website",
             description: "Create a personal portfolio website using HTML and CSS.",
@@ -106,12 +106,12 @@ const Assignments = () => {
           }
         ];
 
-        setAssignments(mockAssignments);
-        const total = mockAssignments.length;
-        const submitted = mockAssignments.filter(a => a.status === "Submitted" || a.status === "Graded").length;
-        const pending = mockAssignments.filter(a => a.status === "In Progress" || a.status === "Not Started").length;
-        const graded = mockAssignments.filter(a => a.status === "Graded").length;
-        const upcoming = getUpcomingAssignments().length;
+        setAssessments (mockAssessments );
+        const total = mockAssessments .length;
+        const submitted = mockAssessments .filter(a => a.status === "Submitted" || a.status === "Graded").length;
+        const pending = mockAssessments .filter(a => a.status === "In Progress" || a.status === "Not Started").length;
+        const graded = mockAssessments .filter(a => a.status === "Graded").length;
+        const upcoming = getUpcomingAssessments ().length;
         setStats({ total, submitted, pending, graded, upcoming });
       } catch (error) {
         console.error("Error loading mock data:", error);
@@ -124,11 +124,11 @@ const Assignments = () => {
   }, []);
 
   useEffect(() => {
-    if (assignments.length > 0) {
-      const upcomingCount = getUpcomingAssignments().length;
+    if (Assessments .length > 0) {
+      const upcomingCount = getUpcomingAssessments ().length;
       setStats(prev => ({ ...prev, upcoming: upcomingCount }));
     }
-  }, [assignments]);
+  }, [Assessments ]);
 
   const mockFileUpload = async (assignmentId, file) => {
     return new Promise((resolve) => {
@@ -150,7 +150,7 @@ const Assignments = () => {
 
     try {
       await mockFileUpload(assignmentId, file);
-      setAssignments(prev => prev.map(a => 
+      setAssessments (prev => prev.map(a => 
         a.id === assignmentId 
           ? { ...a, status: "Submitted", submissionDate: new Date().toISOString().split('T')[0], files: [file.name] } 
           : a
@@ -159,7 +159,7 @@ const Assignments = () => {
         ...prev,
         submitted: prev.submitted + 1,
         pending: prev.pending - 1,
-        upcoming: getUpcomingAssignments().length
+        upcoming: getUpcomingAssessments ().length
       }));
       setFileInputs(prev => ({ ...prev, [assignmentId]: null }));
       setUploadProgress(prev => ({ ...prev, [assignmentId]: null }));
@@ -177,8 +177,8 @@ const Assignments = () => {
     setSortConfig({ key, direction });
   };
 
-  const sortedAssignments = React.useMemo(() => {
-    let sortableItems = [...assignments];
+  const sortedAssessments  = React.useMemo(() => {
+    let sortableItems = [...Assessments ];
     if (sortConfig.key) {
       sortableItems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'ascending' ? -1 : 1;
@@ -187,9 +187,9 @@ const Assignments = () => {
       });
     }
     return sortableItems;
-  }, [assignments, sortConfig]);
+  }, [Assessments , sortConfig]);
 
-  const filteredAssignments = sortedAssignments.filter(assignment => {
+  const filteredAssessments  = sortedAssessments .filter(assignment => {
     const matchesSearch = assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          assignment.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          assignment.module.toLowerCase().includes(searchTerm.toLowerCase());
@@ -241,15 +241,15 @@ const Assignments = () => {
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center">
           <FaClipboardList className="text-teal-500 mr-3" />
-          Assignments
+          Assessments 
         </h1>
-        <p className="text-gray-600 mt-2">Track and submit your course assignments</p>
+        <p className="text-gray-600 mt-2">Track and submit your course Assessments </p>
       </header>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
         {[
-          { title: "Total Assignments", value: stats.total, icon: FaClipboardList, color: "teal" },
+          { title: "Total Assessments ", value: stats.total, icon: FaClipboardList, color: "teal" },
           { title: "Submitted", value: stats.submitted, icon: FaCheckCircle, color: "purple" },
           { title: "Pending", value: stats.pending, icon: FaRegClock, color: "yellow" },
           { title: "Graded", value: stats.graded, icon: FaChartLine, color: "green" },
@@ -275,9 +275,9 @@ const Assignments = () => {
         ))}
       </div>
 
-      {/* Tabs for All/Upcoming assignments */}
+      {/* Tabs for All/Upcoming Assessments  */}
       <div className="mb-6 flex border-b border-gray-200">
-        {["All Assignments", "Upcoming This Week"].map((tab) => (
+        {["All Assessments ", "Upcoming This Week"].map((tab) => (
           <button
             key={tab}
             className={`py-2 px-4 font-medium text-sm ${activeTab === tab.toLowerCase().split(' ')[0] ? "border-b-2 border-teal-500 text-teal-600" : "text-gray-500 hover:text-gray-700"}`}
@@ -296,7 +296,7 @@ const Assignments = () => {
           </div>
           <input
             type="text"
-            placeholder="Search assignments..."
+            placeholder="Search Assessments ..."
             className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -337,10 +337,10 @@ const Assignments = () => {
         </div>
       </div>
 
-      {/* Assignments Grid */}
+      {/* Assessments  Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-        {filteredAssignments.length > 0 ? (
-          filteredAssignments.map((assignment) => {
+        {filteredAssessments .length > 0 ? (
+          filteredAssessments .map((assignment) => {
             const StatusIcon = colorScheme.status[assignment.status]?.icon || FaRegClock;
             const isDue = isOverdue(assignment.dueDate);
             
@@ -430,14 +430,14 @@ const Assignments = () => {
           })
         ) : (
           <div className="col-span-full text-center py-10 text-gray-500">
-            No assignments found matching your criteria
+            No Assessments  found matching your criteria
           </div>
         )}
       </div>
 
-      {/* Submit buttons for assignments with files selected */}
+      {/* Submit buttons for Assessments  with files selected */}
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredAssignments
+        {filteredAssessments 
           .filter(assignment => assignment.status !== "Submitted" && assignment.status !== "Graded" && fileInputs[assignment.id])
           .map(assignment => (
             <motion.div 
@@ -621,4 +621,4 @@ const Assignments = () => {
   );
 };
 
-export default Assignments;
+export default Assessments ;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
   FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, 
-  FaCalendarAlt, FaGraduationCap, FaBriefcase,
-  FaEdit, FaSave, FaTimes, FaCamera, FaLinkedin,
-  FaGithub, FaTwitter, FaGlobe, FaBuilding, FaCode
+  FaCalendarAlt, FaBriefcase, FaEdit, FaSave, 
+  FaTimes, FaCamera, FaLinkedin, FaGithub, 
+  FaTwitter, FaGlobe, FaBuilding, FaCode
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -11,16 +11,15 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("professional");
+  const [loading, setLoading] = useState(false);
 
   // Mock employee data
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        setLoading(true);
+        setLoading(false);
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 0));
         
         const mockUser = {
           id: 1,
@@ -28,7 +27,7 @@ const Profile = () => {
           email: "rakesh@camelq.in",
           avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
           phone: "9876567898",
-          location: "Hyderabad,India",
+          location: "Hyderabad, India",
           bio: "Full-stack developer with expertise in modern JavaScript frameworks. Passionate about building scalable applications and solving complex problems.",
           dob: "2001-07-11",
           joiningDate: "2025-04-02",
@@ -426,212 +425,92 @@ const Profile = () => {
             </div>
           </motion.div>
 
-          {/* Tabs */}
+          {/* Professional Information Card */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100"
+            className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8"
           >
-            <div className="border-b border-gray-200">
-              <nav className="flex -mb-px">
-                <button
-                  onClick={() => setActiveTab("professional")}
-                  className={`py-4 px-6 text-center font-medium text-sm ${activeTab === "professional" ? "border-b-2 border-teal-500 text-teal-600" : "text-gray-500 hover:text-gray-700"}`}
-                >
-                  Professional Info
-                </button>
-                <button
-                  onClick={() => setActiveTab("skills")}
-                  className={`py-4 px-6 text-center font-medium text-sm ${activeTab === "skills" ? "border-b-2 border-teal-500 text-teal-600" : "text-gray-500 hover:text-gray-700"}`}
-                >
-                  Skills & Technologies
-                </button>
-                <button
-                  onClick={() => setActiveTab("education")}
-                  className={`py-4 px-6 text-center font-medium text-sm ${activeTab === "education" ? "border-b-2 border-teal-500 text-teal-600" : "text-gray-500 hover:text-gray-700"}`}
-                >
-                  Education
-                </button>
-              </nav>
+            <div className="border-b border-gray-200 px-6 py-4">
+              <h3 className="text-lg font-semibold text-gray-800">Professional Information</h3>
             </div>
             
             <div className="p-6">
-              {activeTab === "professional" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Professional Details</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          name="name"
-                          value={editedUser.name}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        />
-                      ) : (
-                        <p className="p-2 bg-gray-50 rounded">{user.name}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                      {isEditing ? (
-                        <input
-                          type="email"
-                          name="email"
-                          value={editedUser.email}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        />
-                      ) : (
-                        <p className="p-2 bg-gray-50 rounded">{user.email}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Position</label>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          name="position"
-                          value={editedUser.position}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        />
-                      ) : (
-                        <p className="p-2 bg-gray-50 rounded">{user.position}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          name="department"
-                          value={editedUser.department}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        />
-                      ) : (
-                        <p className="p-2 bg-gray-50 rounded">{user.department}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
-                      <p className="p-2 bg-gray-50 rounded">{user.experience}</p>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Joining Date</label>
-                      <p className="p-2 bg-gray-50 rounded">{new Date(user.joiningDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                    </div>
-                  </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={editedUser.name}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                  ) : (
+                    <p className="p-3 bg-gray-50 rounded-md">{user.name}</p>
+                  )}
                 </div>
-              )}
-              
-              {activeTab === "skills" && (
+                
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Skills & Technologies</h3>
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Technical Skills</label>
-                    <div className="flex flex-wrap gap-2">
-                      {user.skills.map((skill, index) => (
-                        <span key={index} className="px-3 py-1 bg-teal-100 text-teal-800 text-sm rounded-full">
-                          {skill}
-                        </span>
-                      ))}
-                      {isEditing && (
-                        <button className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full hover:bg-gray-300">
-                          + Add Skill
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Technologies</label>
-                    <div className="flex flex-wrap gap-2">
-                      {user.technologies.map((tech, index) => (
-                        <span key={index} className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">
-                          {tech}
-                        </span>
-                      ))}
-                      {isEditing && (
-                        <button className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full hover:bg-gray-300">
-                          + Add Technology
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Professional Summary</label>
-                    {isEditing ? (
-                      <textarea
-                        name="bio"
-                        value={editedUser.bio}
-                        onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded"
-                        rows="4"
-                      />
-                    ) : (
-                      <p className="p-3 bg-gray-50 rounded">{user.bio}</p>
-                    )}
-                  </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                  {isEditing ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={editedUser.email}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                  ) : (
+                    <p className="p-3 bg-gray-50 rounded-md">{user.email}</p>
+                  )}
                 </div>
-              )}
-              
-              {activeTab === "education" && (
+                
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Education Background</h3>
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="font-medium text-gray-800">{user.education.degree}</h4>
-                          <p className="text-teal-600">{user.education.university}</p>
-                          <p className="text-sm text-gray-500">Graduated {user.education.graduationYear}</p>
-                        </div>
-                        <FaGraduationCap className="text-teal-500 text-xl" />
-                      </div>
-                    </div>
-                    
-                    {isEditing && (
-                      <div className="mt-4 p-4 border border-dashed border-gray-300 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Add Education</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                          <input type="text" placeholder="Degree" className="p-2 border border-gray-300 rounded" />
-                          <input type="text" placeholder="University" className="p-2 border border-gray-300 rounded" />
-                          <input type="text" placeholder="Graduation Year" className="p-2 border border-gray-300 rounded" />
-                        </div>
-                        <button className="px-4 py-2 bg-teal-500 text-white rounded-md text-sm">
-                          Add Education
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="mt-6">
-                    <h4 className="text-md font-medium text-gray-700 mb-2">Certifications</h4>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-600">No certifications added yet.</p>
-                      {isEditing && (
-                        <button className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm">
-                          + Add Certification
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="position"
+                      value={editedUser.position}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                  ) : (
+                    <p className="p-3 bg-gray-50 rounded-md">{user.position}</p>
+                  )}
                 </div>
-              )}
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="department"
+                      value={editedUser.department}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                  ) : (
+                    <p className="p-3 bg-gray-50 rounded-md">{user.department}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Experience</label>
+                  <p className="p-3 bg-gray-50 rounded-md">{user.experience}</p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Joining Date</label>
+                  <p className="p-3 bg-gray-50 rounded-md">{new Date(user.joiningDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                </div>
+              </div>
             </div>
           </motion.div>
-        </div>
+          </div>
       </div>
     </div>
   );
